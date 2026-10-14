@@ -48,3 +48,28 @@ def test_update_task():
     assert update_response.status_code == 200
     assert update_response.json()["title"] == "New title"
     assert update_response.json()["completed"] == 1
+
+    assert update_response.status_code == 200
+    assert update_response.json()["title"] == "New title"
+    assert update_response.json()["completed"] == 1
+
+
+def test_delete_task():
+    create_response = client.post(
+        "/tasks",
+        json={
+            "title": "Task to delete",
+            "completed": False
+        }
+    )
+
+    task_id = create_response.json()["id"]
+
+    delete_response = client.delete(
+        f"/tasks/{task_id}"
+    )
+
+    assert delete_response.status_code == 200
+    assert delete_response.json() == {
+        "message": "Task deleted successfully"
+    }
