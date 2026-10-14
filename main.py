@@ -9,11 +9,21 @@ create_table()
 
 
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+
 
 class Task(BaseModel):
     title: str = Field(min_length=1)
+
+    @field_validator("title")
+    @classmethod
+    def validate_title(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("Title cannot be empty or spaces")
+        return value.strip()
+
     completed: bool = False
+
 
 
 
