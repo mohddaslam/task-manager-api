@@ -73,3 +73,20 @@ def test_delete_task():
     assert delete_response.json() == {
         "message": "Task deleted successfully"
     }
+
+def test_get_task_by_id():
+    create_response = client.post(
+        "/tasks",
+        json={
+            "title": "Find this task",
+            "completed": False
+        }
+    )
+
+    task_id = create_response.json()["id"]
+
+    response = client.get(f"/tasks/{task_id}")
+
+    assert response.status_code == 200
+    assert response.json()["id"] == task_id
+    assert response.json()["title"] == "Find this task"

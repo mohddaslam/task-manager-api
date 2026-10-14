@@ -32,6 +32,24 @@ def get_tasks():
 
     return [dict(task) for task in tasks]
 
+@app.get("/tasks/{task_id}")
+def get_task(task_id: int):
+    connection = get_connection()
+
+    task = connection.execute(
+        "SELECT * FROM tasks WHERE id = ?",
+        (task_id,)
+    ).fetchone()
+
+    connection.close()
+
+    if task is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Task not found"
+        )
+
+    return dict(task)
 
 @app.post("/tasks")
 def add_task(task: Task):
