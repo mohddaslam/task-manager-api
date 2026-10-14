@@ -104,3 +104,11 @@ def test_update_nonexistent_task():
     assert response.json() == {
         "detail": "Task not found"
     }
+
+def test_delete_nonexistent_task():
+    response = client.delete("/tasks/999999")
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail": "Task not found"
+    }
