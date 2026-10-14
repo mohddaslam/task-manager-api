@@ -8,9 +8,13 @@ app = FastAPI()
 create_table()
 
 
+
+from pydantic import BaseModel, Field
+
 class Task(BaseModel):
-    title: str
+    title: str = Field(min_length=1)
     completed: bool = False
+
 
 
 @app.get("/")
@@ -47,13 +51,14 @@ def add_task(task: Task):
     return dict(new_task)
 
 
+
 @app.put("/tasks/{task_id}")
-def update_task(task_id: int):
+def update_task(task_id: int, updated_task: Task):
     connection = get_connection()
 
     cursor = connection.execute(
-        "UPDATE tasks SET completed = 1 WHERE id = ?",
-        (task_id,)
+        "UPDATE tasks SET title = ?, completed = ? WHERE id = ?",
+        (updated_task.title, updated_task.completed, task_id)
     )
     connection.commit()
 
@@ -61,6 +66,7 @@ def update_task(task_id: int):
         "SELECT * FROM tasks WHERE id = ?",
         (task_id,)
     ).fetchone()
+
     connection.close()
 
     if task is None:
