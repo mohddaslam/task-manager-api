@@ -1,10 +1,15 @@
 
 import sqlite3
+from pathlib import Path
+
+DATABASE_PATH = Path(__file__).resolve().parent / "tasks.db"
+
 
 def get_connection():
-    connection = sqlite3.connect("tasks.db")
+    connection = sqlite3.connect(DATABASE_PATH)
     connection.row_factory = sqlite3.Row
     return connection
+
 
 def create_table():
     connection = get_connection()
