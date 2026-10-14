@@ -90,3 +90,17 @@ def test_get_task_by_id():
     assert response.status_code == 200
     assert response.json()["id"] == task_id
     assert response.json()["title"] == "Find this task"
+
+def test_update_nonexistent_task():
+    response = client.put(
+        "/tasks/999999",
+        json={
+            "title": "Updated task",
+            "completed": True
+        }
+    )
+
+    assert response.status_code == 404
+    assert response.json() == {
+        "detail": "Task not found"
+    }
