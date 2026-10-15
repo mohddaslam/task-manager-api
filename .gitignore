@@ -6,3 +6,4 @@ tasks.db
 venv/
 .pytest_cache/
 .env
+tasks-backup.db
