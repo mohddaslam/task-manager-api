@@ -1,0 +1,16 @@
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_PATH: /app/data/tasks.db
+    volumes:
+      - task_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  task_data:
