@@ -1,9 +1,10 @@
 
+
 services:
   api:
     build: .
     ports:
-      - "8000:8000"
+      - "8002:8000"
     environment:
       DATABASE_PATH: /app/data/tasks.db
     volumes:
@@ -12,3 +13,5 @@ services:
 
 volumes:
   task_data:
+    external: true
+    name: task-manager-api_task_data
