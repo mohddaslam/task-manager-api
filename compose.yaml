@@ -1,0 +1,10 @@
+
+services:
+  api:
+    build: .
+    container_name: task-manager-compose
+    ports:
+      - "8001:8000"
+    volumes:
+      - .:/app
+    restart: unless-stopped
