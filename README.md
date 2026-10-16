@@ -1,7 +1,14 @@
-
 # Task Manager API
 
-A beginner backend development project built with Python, FastAPI, and SQLite. The application provides REST API endpoints to create, retrieve, update, and delete tasks.
+A beginner backend development project built with Python, FastAPI, and SQLite. This REST API allows users to create, retrieve, update, and delete tasks.
+
+## Live Demo
+
+- **Live API:** https://task-manager-api-vv87.onrender.com
+- **Interactive API Documentation (Swagger):** https://task-manager-api-vv87.onrender.com/docs
+- **GitHub Repository:** https://github.com/mohddaslam/task-manager-api
+
+> Note: The free Render service may take some time to respond after inactivity. SQLite data may be lost when the service restarts or is redeployed.
 
 ## Features
 
@@ -14,6 +21,7 @@ A beginner backend development project built with Python, FastAPI, and SQLite. T
 - Return appropriate errors for tasks that do not exist
 - Automated API tests using pytest
 - Docker support for containerized execution
+- Cloud deployment using Render
 
 ## Tech Stack
 
@@ -24,6 +32,7 @@ A beginner backend development project built with Python, FastAPI, and SQLite. T
 - Pytest
 - Docker
 - Git and GitHub
+- Render
 
 ## API Endpoints
 
@@ -36,23 +45,25 @@ A beginner backend development project built with Python, FastAPI, and SQLite. T
 | PUT | `/tasks/{task_id}` | Update a task |
 | DELETE | `/tasks/{task_id}` | Delete a task |
 
+You can try these endpoints using the [live Swagger documentation](https://task-manager-api-vv87.onrender.com/docs).
+
 ## Run Locally
 
-Install the dependencies:
+### 1. Install dependencies
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-Start the API:
+### 2. Start the API
 
 ```bash
 uvicorn main:app --reload
 ```
 
-Open the interactive API documentation:
+### 3. Open the documentation
 
-http://localhost:8000/docs
+Visit http://localhost:8000/docs
 
 ## Run Tests
 
@@ -60,18 +71,20 @@ http://localhost:8000/docs
 python -m pytest -v
 ```
 
+The project's automated test suite passed all 7 tests during local testing.
+
 ## Run with Docker
 
-Build the Docker image:
+Build the production Docker image:
 
 ```bash
-docker build -t task-manager-api .
+docker build -f Dockerfile.prod -t task-manager-api .
 ```
 
 Start the container:
 
 ```bash
-docker run -d --name task-manager-container -p 8000:8000 task-manager-api
+docker run -d --name task-manager-container -p 8000:8000 -v task-manager-data:/app/data task-manager-api
 ```
 
 Open http://localhost:8000/docs to access the API.
@@ -82,10 +95,16 @@ To stop the container:
 docker stop task-manager-container
 ```
 
+To remove the stopped container:
+
+```bash
+docker rm task-manager-container
+```
+
+The named Docker volume stores the SQLite database outside the container, helping preserve local data when the container is removed and recreated.
+
 ## Database
 
-The application uses SQLite to store tasks in `tasks.db`.
+The application uses SQLite to store tasks. The database path is configured through the `DATABASE_PATH` environment variable.
 
-## Project Status
-
-This is a learning and portfolio project. Further improvements may include cloud deployment, configuration management, and production security.
+For the Render free deployment, do
